@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C Language Quiz · BCA Sem 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f2f5f9;--card:#ffffff;--ink:#14213d;--muted:#5b6882;--line:#d5dce8;
+  --mark:#ffd34d;--good:#1f8a4c;--goodbg:#e2f5ea;--bad:#c23a3a;--badbg:#fbe6e6;--code:#14213d;--codefg:#e8eefc;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1626;--card:#18223a;--ink:#eef2fb;--muted:#9aa8c4;--line:#2b3856;
+  --goodbg:#143a28;--badbg:#44202a;--good:#5fd392;--bad:#ff8a8a;--code:#0a1020;
+}}
+:root[data-theme="dark"]{
+  --paper:#0f1626;--card:#18223a;--ink:#eef2fb;--muted:#9aa8c4;--line:#2b3856;
+  --goodbg:#143a28;--badbg:#44202a;--good:#5fd392;--bad:#ff8a8a;--code:#0a1020;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 56px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-size:clamp(1.9rem,6vw,2.8rem);line-height:1.05;margin:0;font-weight:800;letter-spacing:-.02em}
+h1 span{background:linear-gradient(transparent 58%,var(--mark) 58%);padding:0 4px}
+.sub{color:var(--muted);margin:6px 0 0}
+nav{display:flex;gap:4px;background:var(--card);border:1.5px solid var(--ink);border-radius:10px;padding:4px}
+nav button{border:0;background:none;color:var(--ink);font:600 .95rem inherit;font-family:inherit;padding:8px 16px;border-radius:7px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.card{background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:22px;box-shadow:5px 5px 0 var(--ink)}
+.hidden{display:none!important}
+label{font-weight:600;display:block;margin-bottom:6px}
+input[type=text]{width:100%;font:inherit;padding:12px 14px;border:1.5px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink)}
+.btn{font:700 1rem inherit;font-family:inherit;border:1.5px solid var(--ink);background:var(--mark);color:#14213d;padding:12px 22px;border-radius:10px;cursor:pointer;margin-top:16px}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.facts{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);margin:14px 0 0;padding:0;list-style:none}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--ink);width:0;transition:width .25s}
+.qmeta{display:flex;justify-content:space-between;color:var(--muted);font-weight:600;font-size:.92rem}
+h2{font-size:1.35rem;margin:10px 0 14px;line-height:1.3}
+pre{background:var(--code);color:var(--codefg);font:500 .92rem/1.55 "JetBrains Mono",ui-monospace,monospace;padding:14px 16px;border-radius:10px;overflow-x:auto;margin:0 0 14px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:600 1rem inherit;font-family:inherit;background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);border-radius:10px;padding:12px 14px;cursor:pointer}
+.opt:hover{background:var(--mark);color:#14213d}
+.opt[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+.opt.good{background:var(--goodbg);border-color:var(--good);color:var(--ink)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--ink)}
+.score{font-size:clamp(3rem,14vw,5rem);font-weight:800;line-height:1;margin:0}
+.rev{margin-top:18px;border-top:1.5px dashed var(--line);padding-top:6px}
+.rev details{border-bottom:1px solid var(--line);padding:10px 0}
+.rev summary{cursor:pointer;font-weight:600}
+.tag{font-weight:800}.tag.ok{color:var(--good)}.tag.no{color:var(--bad)}
+.rev p{margin:8px 0 0;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{font-size:.9rem;color:var(--muted)}
+td.rank{font-weight:800;font-size:1.1rem}
+tr.me td{background:var(--mark);color:#14213d}
+.empty{color:var(--muted);text-align:center;padding:22px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.toggle{font:600 .85rem inherit;font-family:inherit;background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+tr.me .toggle{background:var(--card)}
+tr.detail td{background:var(--paper);padding:12px 14px}
+.dl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dl li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card)}
+.dl li.ok{border-color:var(--good);background:var(--goodbg)}
+.dl li.no{border-color:var(--bad);background:var(--badbg)}
+.dl b{min-width:1.4em}
+.dl small{display:block;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>C Language <span>Quiz</span></h1>
+      <p class="sub">BCA Semester 1 · Basics of C</p>
+    </div>
+    <nav role="tablist" aria-label="Sections">
+      <button role="tab" id="tabQuiz" aria-selected="true">Quiz</button>
+      <button role="tab" id="tabRes" aria-selected="false">Results</button>
+    </nav>
+  </header>
+
+  <main id="quizSec">
+    <section class="card" id="start">
+      <label for="name">Your name</label>
+      <input type="text" id="name" maxlength="30" placeholder="e.g. Riya Sharma" autocomplete="name">
+      <button class="btn" id="startBtn">Start quiz</button>
+      <ul class="facts"><li id="factQ"></li><li>1 mark each</li><li>Results are saved on this device</li></ul>
+    </section>
+
+    <section class="card hidden" id="play">
+      <div class="bar"><i id="prog"></i></div>
+      <div class="qmeta"><span id="qnum"></span><span id="timer"></span></div>
+      <h2 id="qtext"></h2>
+      <pre id="qcode" class="hidden"></pre>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Answer options"></div>
+      <button class="btn" id="nextBtn" disabled>Next question</button>
+    </section>
+
+    <section class="card hidden" id="done">
+      <p class="sub" id="who"></p>
+      <p class="score" id="finalScore"></p>
+      <p id="verdict" class="sub"></p>
+      <p class="sub" id="rankLine"></p>
+      <button class="btn" id="againBtn">Take it again</button>
+      <button class="btn ghost" id="toRes">See rankings</button>
+      <div class="rev" id="review"></div>
+    </section>
+  </main>
+
+  <section id="resSec" class="hidden">
+    <div class="card">
+      <div class="row">
+        <h2 style="margin:0">Rankings</h2>
+        <button class="btn ghost" id="clearBtn" style="margin:0;padding:8px 14px">Clear all results</button>
+      </div>
+      <p class="sub" style="margin:0 0 10px">Ranked by score. Ties go to the faster finish.</p>
+      <div class="tablewrap" id="table"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const QUESTIONS=[
+ {q:"Who developed the C language?",o:["Bjarne Stroustrup","Dennis Ritchie","James Gosling","Guido van Rossum"],a:1,e:"Dennis Ritchie created C at Bell Labs in the early 1970s."},
+ {q:"Which header file is needed to use printf() and scanf()?",o:["<conio.h>","<stdlib.h>","<stdio.h>","<string.h>"],a:2,e:"stdio.h (standard input/output) declares printf and scanf."},
+ {q:"Which is a valid variable name in C?",o:["2total","my-var","int","_count"],a:3,e:"Names can start with a letter or underscore, cannot start with a digit, contain '-' or be a keyword."},
+ {q:"What does this program print?",code:'int a = 7, b = 2;\nprintf("%d", a / b);',o:["3.5","3","4","2"],a:1,e:"Both operands are int, so integer division gives 3 (the fraction is dropped)."},
+ {q:"Which format specifier prints a float value?",o:["%d","%c","%s","%f"],a:3,e:"%f is for float/double, %d for int, %c for char, %s for strings."},
+ {q:"Which operator gives the address of a variable?",o:["*","&","->","%"],a:1,e:"&x is the address of x. * is used to dereference a pointer."},
+ {q:"What is the index of the first element in a C array?",o:["0","1","-1","Depends on the compiler"],a:0,e:"C arrays are zero-indexed: a[0] is the first element."},
+ {q:"Which loop always runs its body at least once?",o:["for","while","do-while","None of these"],a:2,e:"do-while checks its condition after executing the body."},
+ {q:"What is the value of x after this code?",code:"int x = 5;\nx += 3;\nx *= 2;",o:["13","11","16","10"],a:2,e:"x becomes 8 after x += 3, then 16 after x *= 2."},
+ {q:"Where does execution of every C program begin?",o:["The first function written","main()","start()","The #include line"],a:1,e:"The operating system calls main() to start your program."},
+ {q:"Which of these is NOT a keyword in C?",o:["switch","static","integer","typedef"],a:2,e:"The keyword is int. 'integer' is not reserved in C."},
+ {q:"What is the size of a char in C?",o:["1 byte","2 bytes","4 bytes","8 bytes"],a:0,e:"sizeof(char) is always 1 byte by definition."},
+ {q:"What does this program print?",code:'int x = 10;\nprintf("%d", x++);\nprintf(" %d", x);',o:["10 10","11 11","10 11","11 10"],a:2,e:"Post-increment uses the old value (10) first, then x becomes 11."},
+ {q:"Which symbol starts a single-line comment in C99 and later?",o:["//","#","--","<!-- -->"],a:0,e:"C99 added // for single-line comments. /* */ works for any length."},
+ {q:"Which operator checks whether two values are equal?",o:["=","==","===","!="],a:1,e:"= assigns a value, == compares. C has no === operator."},
+ {q:"What is the value of 17 % 5?",o:["3","2","3.4","0"],a:1,e:"% gives the remainder: 17 = 3 x 5 + 2."},
+ {q:"Which keyword exits a loop immediately?",o:["continue","break","goto","stop"],a:1,e:"break leaves the nearest loop or switch. continue only skips to the next iteration."},
+ {q:"A C string always ends with which character?",o:["'\\n'","'\\0'","a space","EOF"],a:1,e:"The null character '\\0' marks the end of a string."},
+ {q:"Which line correctly declares an integer array of 5 elements?",o:["int a(5);","int a[5];","array int a[5];","int[5] a;"],a:1,e:"Syntax is type name[size]; so int a[5]; declares 5 ints."},
+ {q:"Which function is used to take input from the keyboard?",o:["printf()","scanf()","puts()","display()"],a:1,e:"scanf() reads formatted input. printf() and puts() print output."}
+
+];
+const QUIZ_SIZE=10; // questions shown per attempt (max = QUESTIONS.length)
+const KEY="clang_quiz_results_v1";
+const $=id=>document.getElementById(id);
+let state={name:"",i:0,answers:[],picked:null,t0:0,tick:null};
+
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function buildSet(){
+  return shuffle(QUESTIONS).slice(0,QUIZ_SIZE).map(q=>{
+    const opts=shuffle(q.o.map((t,i)=>({t,right:i===q.a})));
+    return {q:q.q,code:q.code,e:q.e,o:opts.map(x=>x.t),a:opts.findIndex(x=>x.right)};
+  });
+}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}}
+function save(list){try{localStorage.setItem(KEY,JSON.stringify(list));return true}catch(e){return false}}
+function rankList(list){return [...list].sort((a,b)=>b.score-a.score||a.time-b.time||a.date-b.date)}
+function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+
+function show(tab){
+  const quiz=tab==="quiz";
+  $("quizSec").classList.toggle("hidden",!quiz);$("resSec").classList.toggle("hidden",quiz);
+  $("tabQuiz").setAttribute("aria-selected",quiz);$("tabRes").setAttribute("aria-selected",!quiz);
+  if(!quiz)renderTable();
+}
+$("tabQuiz").onclick=()=>show("quiz");$("tabRes").onclick=()=>show("res");
+$("toRes").onclick=()=>show("res");
+
+$("factQ").textContent=QUIZ_SIZE+" random questions from a bank of "+QUESTIONS.length;
+function panel(id){["start","play","done"].forEach(p=>$(p).classList.toggle("hidden",p!==id))}
+
+$("startBtn").onclick=()=>{
+  const n=$("name").value.trim();
+  if(!n){$("name").focus();$("name").placeholder="Please enter your name first";return}
+  state={name:n,i:0,answers:[],picked:null,t0:Date.now(),tick:null,qs:buildSet()};
+  panel("play");render();
+  clearInterval(state.tick);
+  state.tick=setInterval(()=>{$("timer").textContent=fmt(Math.floor((Date.now()-state.t0)/1000))},500);
+};
+$("name").addEventListener("keydown",e=>{if(e.key==="Enter")$("startBtn").click()});
+
+function render(){
+  const q=state.qs[state.i];state.picked=null;
+  $("prog").style.width=(state.i/state.qs.length*100)+"%";
+  $("qnum").textContent="Question "+(state.i+1)+" of "+state.qs.length;
+  $("qtext").textContent=q.q;
+  const code=$("qcode");code.classList.toggle("hidden",!q.code);code.textContent=q.code||"";
+  const box=$("opts");box.innerHTML="";
+  q.o.forEach((t,idx)=>{
+    const b=document.createElement("button");
+    b.className="opt";b.setAttribute("role","radio");b.setAttribute("aria-checked","false");b.textContent=t;
+    b.onclick=()=>{
+      state.picked=idx;
+      [...box.children].forEach((c,k)=>c.setAttribute("aria-checked",k===idx));
+      $("nextBtn").disabled=false;
+    };
+    box.appendChild(b);
+  });
+  $("nextBtn").disabled=true;
+  $("nextBtn").textContent=state.i===state.qs.length-1?"Finish quiz":"Next question";
+}
+
+$("nextBtn").onclick=()=>{
+  state.answers.push(state.picked);
+  if(state.i<state.qs.length-1){state.i++;render()}else finish();
+};
+
+function finish(){
+  clearInterval(state.tick);
+  const time=Math.round((Date.now()-state.t0)/1000);
+  const score=state.answers.reduce((s,a,k)=>s+(a===state.qs[k].a?1:0),0);
+  const detail=state.qs.map((q,k)=>({q:q.q,code:q.code||"",you:q.o[state.answers[k]],ans:q.o[q.a],ok:state.answers[k]===q.a}));
+  const entry={id:Date.now(),name:state.name,score,total:state.qs.length,time,date:Date.now(),detail};
+  const list=load();list.push(entry);const ok=save(list);
+  panel("done");
+  $("who").textContent=state.name+", here is your result";
+  $("finalScore").textContent=score+" / "+state.qs.length;
+  $("verdict").textContent=(score>=8?"Strong grasp of C basics.":score>=5?"Good start. Review the missed answers below.":"Revise the basics and try again.")+" Time: "+fmt(time)+".";
+  const pos=rankList(list).findIndex(r=>r.id===entry.id)+1;
+  $("rankLine").textContent=ok?("Your rank: #"+pos+" of "+list.length+" saved attempts."):"Could not save this result: browser storage is unavailable.";
+  const rv=$("review");rv.innerHTML="";
+  state.qs.forEach((q,k)=>{
+    const right=state.answers[k]===q.a;
+    const d=document.createElement("details");
+    const s=document.createElement("summary");
+    const tag=document.createElement("span");tag.className="tag "+(right?"ok":"no");tag.textContent=right?"Correct":"Wrong";
+    s.append(tag," · Q"+(k+1)+". "+q.q);
+    const p=document.createElement("p");
+    p.textContent="Your answer: "+q.o[state.answers[k]]+(right?"":" | Correct answer: "+q.o[q.a])+". "+q.e;
+    d.append(s,p);rv.appendChild(d);
+  });
+  window.__lastId=entry.id;
+}
+$("againBtn").onclick=()=>{panel("start");$("name").value=state.name};
+
+function renderTable(){
+  const list=rankList(load());const host=$("table");
+  if(!list.length){host.innerHTML='<p class="empty">No attempts yet. Take the quiz to appear here.</p>';return}
+  const t=document.createElement("table");
+  t.innerHTML="<thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Time</th><th>Date</th><th>Answers</th></tr></thead>";
+  const tb=document.createElement("tbody");
+  list.forEach((r,k)=>{
+    const tr=document.createElement("tr");if(r.id===window.__lastId)tr.className="me";
+    [["#"+(k+1),"rank"],[r.name],[r.score+" / "+r.total],[fmt(r.time)],[new Date(r.date).toLocaleDateString()]].forEach(([c,cls])=>{
+      const td=document.createElement("td");if(cls)td.className=cls;td.textContent=c;tr.appendChild(td)});
+    const td=document.createElement("td");
+    const b=document.createElement("button");b.className="toggle";b.textContent="Show";b.setAttribute("aria-expanded","false");
+    td.appendChild(b);tr.appendChild(td);tb.appendChild(tr);
+    const dr=document.createElement("tr");dr.className="detail hidden";
+    const dc=document.createElement("td");dc.colSpan=6;
+    const ul=document.createElement("ul");ul.className="dl";
+    (r.detail||[]).forEach((d,n)=>{
+      const li=document.createElement("li");li.className=d.ok?"ok":"no";
+      const m=document.createElement("b");m.textContent=d.ok?"\u2713":"\u2717";
+      const body=document.createElement("div");
+      body.append((n+1)+". "+d.q);
+      const sm=document.createElement("small");
+      sm.textContent="Answered: "+d.you+(d.ok?"":" | Correct: "+d.ans);
+      body.appendChild(sm);li.append(m,body);ul.appendChild(li);
+    });
+    if(!r.detail){const li=document.createElement("li");li.textContent="No question details saved for this older attempt.";ul.appendChild(li)}
+    dc.appendChild(ul);dr.appendChild(dc);tb.appendChild(dr);
+    b.onclick=()=>{const open=dr.classList.toggle("hidden")===false;b.textContent=open?"Hide":"Show";b.setAttribute("aria-expanded",open)};
+  });
+  t.appendChild(tb);host.innerHTML="";host.appendChild(t);
+}
+$("clearBtn").onclick=()=>{
+  if(confirm("Delete all saved results from this device?")){save([]);renderTable()}
+};
+</script>
+</body>
+</html>
